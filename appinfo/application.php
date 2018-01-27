@@ -14,7 +14,9 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\Controller\Lib\ImageService;
 use \OCP\AppFramework\App;
+use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;
 use \OCA\Bookmarks\Controller\WebViewController;
 use OCA\Bookmarks\Controller\Rest\TagsController;
@@ -69,6 +71,7 @@ class Application extends App {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
+			
 			return new InternalBookmarkController(
 				$c->query('AppName'),
 				$c->query('Request'),
@@ -76,7 +79,9 @@ class Application extends App {
 				$c->query('ServerContainer')->getDatabaseConnection(),
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
 				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager()
+				$c->query('ServerContainer')->getUserManager(),
+				$c->query('ServerContainer')->query(ImageService::class),
+				$c->query('ServerContainer')->query(ITimeFactory::class)
 			);
 		});
 
@@ -116,6 +121,7 @@ class Application extends App {
 				$c->query('ServerContainer')->getUserManager()
 			);
 		});
+		
 	}
 
 }
