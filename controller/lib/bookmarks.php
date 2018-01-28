@@ -29,8 +29,8 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
-use Dusterio\LinkPreview\Client as LinkPreview;
-use Dusterio\LinkPreview\Exceptions\ConnectionErrorException;
+use Marcelklehr\LinkPreview\Client as LinkPreview;
+use Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException;
 
 class Bookmarks {
 
@@ -633,7 +633,8 @@ class Bookmarks {
 		$previewClient->getParser('general')->setMinimumImageDimension(0,0);
 		try {
 			$preview = $previewClient->getPreview('general');
-		} catch (\Dusterio\LinkPreview\Exceptions\ConnectionErrorException $e) {
+		} catch (\Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
 			return $data;
 		}
 		
